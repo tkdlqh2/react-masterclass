@@ -1,8 +1,7 @@
 import { Helmet } from "react-helmet";
-import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { fetchCoins } from "../api";
+import coins_data from "../assets/coins_data.json";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -42,11 +41,6 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Loader = styled.span`
-  text-align: center;
-  display: block;
-`;
-
 const Img = styled.img`
   width: 35px;
   height: 35px;
@@ -64,7 +58,7 @@ interface ICoin {
 }
 
 function Coins() {
-  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  const data: ICoin[] = coins_data;
   return (
     <Container>
       <Helmet>
@@ -73,9 +67,6 @@ function Coins() {
       <Header>
         <Title>코인</Title>
       </Header>
-      {isLoading ? (
-        <Loader>Loading...</Loader>
-      ) : (
         <CoinsList>
           {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
@@ -93,7 +84,7 @@ function Coins() {
             </Coin>
           ))}
         </CoinsList>
-      )}
+      
     </Container>
   );
 }

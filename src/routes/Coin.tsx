@@ -29,6 +29,18 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+const IconWrapper = styled.div`
+  height: 5vh;
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+`;
+
+const BackSpan = styled.span`
+  font-size: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
 const Header = styled.header`
   height: 15vh;
   display: flex;
@@ -165,6 +177,11 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
+      <IconWrapper>
+        <Link to={``}>
+          <BackSpan>&#8630;</BackSpan>
+        </Link>
+      </IconWrapper>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -211,7 +228,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price coinId={coinId} />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
