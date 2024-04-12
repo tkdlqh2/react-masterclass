@@ -1,6 +1,8 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import { useOutletContext } from "react-router-dom";
+import TabCompo from "../components/TabCompo";
 
 interface IHistorical {
   time_open: string;
@@ -15,7 +17,8 @@ interface IHistorical {
 interface ChartProps {
   coinId: string;
 }
-function Chart({ coinId }: ChartProps) {
+function Chart() {
+  const {coinId} = useOutletContext<ChartProps>();
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -24,6 +27,8 @@ function Chart({ coinId }: ChartProps) {
     }
   );
   return (
+    <>
+    <TabCompo priceActive={false} chartActive={true} coinId={coinId} />
     <div>
       {isLoading ? (
         "Loading chart..."
@@ -74,6 +79,7 @@ function Chart({ coinId }: ChartProps) {
         />
       )}
     </div>
+  </>
   );
 }
 

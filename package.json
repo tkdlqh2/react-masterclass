@@ -8,8 +8,8 @@
     "@testing-library/user-event": "^12.8.3",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.1",
-    "@types/react": "^17.0.30",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^17.0.80",
+    "@types/react-dom": "^17.0.25",
     "apexcharts": "^3.29.0",
     "gh-pages": "^3.2.3",
     "react": "^17.0.2",
@@ -17,7 +17,7 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-query": "^3.27.0",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "6.4",
     "react-scripts": "^5.0.1",
     "styled-components": "^5.3.1",
     "styled-reset": "^4.3.4",
@@ -54,8 +54,8 @@
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "@types/react-helmet": "^6.1.4",
     "@types/react-query": "^1.2.9",
-    "@types/react-router-dom": "^5.3.1",
+    "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.15"
   },
-  "homepage": "https://nomadcoders.github.io/react-masterclass"
+  "homepage": "https://tkdlqh2.github.io/react-masterclass"
 }

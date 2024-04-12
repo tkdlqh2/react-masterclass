@@ -1,7 +1,8 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import styled from "styled-components";
-
+import { useOutletContext } from "react-router-dom";
+import TabCompo from "../components/TabCompo";
 
 const PriceTable = styled.table`
   width: 100%;
@@ -49,7 +50,8 @@ function convertUnixTimestamp(unixTimestamp: number): string {
 }
 
 
-function Price({coinId}: PriceProps) {
+function Price() {
+  const {coinId} = useOutletContext<PriceProps>();
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -57,7 +59,8 @@ function Price({coinId}: PriceProps) {
       refetchInterval: 10000,
     }
   );
-  return (
+  return (<>
+    <TabCompo priceActive={true} chartActive={false} coinId={coinId} />
     <div>
       {isLoading ? (
         "Loading Price..."
@@ -88,6 +91,7 @@ function Price({coinId}: PriceProps) {
         </div>
       )}
     </div>
+    </>
   );
 }
 

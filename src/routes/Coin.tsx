@@ -1,17 +1,13 @@
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import {
-  Switch,
-  Route,
   useLocation,
   useParams,
-  useRouteMatch,
+  Outlet,
 } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
-import Chart from "./Chart";
-import Price from "./Price";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -71,33 +67,8 @@ const Description = styled.p`
   margin: 20px 0px;
 `;
 
-const Tabs = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin: 25px 0px;
-  gap: 10px;
-`;
-
-const Tab = styled.span<{ isActive: boolean }>`
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
-  a {
-    padding: 7px 0px;
-    display: block;
-  }
-`;
-
 interface RouteParams {
   coinId: string;
-}
-interface RouteState {
-  name: string;
 }
 interface InfoData {
   id: string;
@@ -154,17 +125,15 @@ interface PriceData {
 }
 
 function Coin() {
-  const { coinId } = useParams<RouteParams>();
-  const { state } = useLocation<RouteState>();
-  const priceMatch = useRouteMatch("/:coinId/price");
-  const chartMatch = useRouteMatch("/:coinId/chart");
+  const { coinId } = useParams<keyof RouteParams>();
+  const {state} = useLocation();
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
-    ["info", coinId],
-    () => fetchCoinInfo(coinId)
+    ["info", coinId ?? ""],
+    () => fetchCoinInfo(coinId ?? "")
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
-    ["tickers", coinId],
-    () => fetchCoinTickers(coinId),
+    ["tickers", coinId ?? ""],
+    () => fetchCoinTickers(coinId ?? ""),
     {
       refetchInterval: 5000,
     }
@@ -178,7 +147,7 @@ function Coin() {
         </title>
       </Helmet>
       <IconWrapper>
-        <Link to={``}>
+        <Link to={`/`}>
           <BackSpan>&#8630;</BackSpan>
         </Link>
       </IconWrapper>
@@ -216,24 +185,7 @@ function Coin() {
               <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
-
-          <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </Tab>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
-            </Tab>
-          </Tabs>
-
-          <Switch>
-            <Route path={`/:coinId/price`}>
-              <Price coinId={coinId} />
-            </Route>
-            <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
-            </Route>
-          </Switch>
+          <Outlet context={{ coinId: coinId,}}/>
         </>
       )}
     </Container>
